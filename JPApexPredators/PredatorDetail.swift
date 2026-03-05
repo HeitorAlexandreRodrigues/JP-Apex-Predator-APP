@@ -9,7 +9,7 @@ import SwiftUI
 import MapKit
 
 struct PredatorDetail: View {
-    let predator : ApexPredator
+    let predator: ApexPredator
     @State var position : MapCameraPosition
         var body: some View {
             GeometryReader { geo in
@@ -44,9 +44,13 @@ struct PredatorDetail: View {
                     
                     //current location
                     NavigationLink {
-                        Image(predator.image)
-                            .resizable()
-                            .scaledToFit()
+                        PredatorMap(position: .camera(MapCamera(
+                            centerCoordinate:
+                                predator.location,
+                            distance: 1000,
+                            heading: 250,
+                            pitch: 80, ))
+                        )
                     } label: {
                         Map(position: $position) {
                             Annotation(predator.name , coordinate: predator.location) {
@@ -68,7 +72,7 @@ struct PredatorDetail: View {
                     }
                     .overlay(alignment:.topLeading) {
                         Text("Current Location : ")
-                            .padding([.leading , .bottom],5)
+                            .padding([.leading,.bottom],5)
                             .padding(.trailing, 8)
                             .background(.black.opacity(0.33))
                             .clipShape(.rect(bottomTrailingRadius: 15))
